@@ -1,0 +1,11 @@
+# Xcode user-specific files
+*.xcuserstate
+xcuserdata/
+
+# Xcode build files
+build/
+DerivedData/
+
+# Other common temporary files
+*.swp
+
