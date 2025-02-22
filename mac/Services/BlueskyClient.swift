@@ -144,14 +144,21 @@ class BlueskyClient {
         decoder.dateDecodingStrategy = .custom { decoder in
             let container = try decoder.singleValueContainer()
             let dateString = try container.decode(String.self)
-            let formatter = ISO8601DateFormatter()
-            formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-            if let date = formatter.date(from: dateString) {
+
+            let fractionalFormatter = ISO8601DateFormatter()
+            fractionalFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds] // Handles `2025-02-22T22:45:34.123Z`
+
+            let nonFractionalFormatter = ISO8601DateFormatter()
+            nonFractionalFormatter.formatOptions = [.withInternetDateTime] // Handles `2025-02-22T22:45:34Z`
+
+            if let date = fractionalFormatter.date(from: dateString) ?? nonFractionalFormatter.date(from: dateString) {
                 return date
             }
+
             throw DecodingError.dataCorruptedError(
                 in: container,
-                debugDescription: "Cannot decode date string \(dateString)")
+                debugDescription: "Cannot decode date string \(dateString)"
+            )
         }
         return try decoder.decode(TimelineResponse.self, from: data)
     }
