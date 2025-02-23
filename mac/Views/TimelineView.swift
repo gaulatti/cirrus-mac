@@ -5,21 +5,24 @@ struct TimelineView: View {
     
     var body: some View {
         NavigationView {
-            content
-                .navigationTitle("Cirrus Timeline")
-                .toolbar {
-                    ToolbarItem(placement: .automatic) {
-                        Button(action: {
-                            Task {
-                                await viewModel.loadTimeline()
-                            }
-                        }) {
-                            Image(systemName: "arrow.clockwise")
+            HStack {
+                Text("Menubar. Something will replace this.")
+            }
+        content
+            .navigationTitle("Timeline")
+            .toolbar {
+                ToolbarItem(placement: .automatic) {
+                    Button(action: {
+                        Task {
+                            await viewModel.loadTimeline()
                         }
-                        .help("Refresh Timeline")
+                    }) {
+                        Image(systemName: "arrow.clockwise")
                     }
+                    .help("Refresh Timeline")
                 }
-        }
+            }
+        }.navigationViewStyle(.columns)
     }
     
     // Use a @ViewBuilder to conditionally build the content.
