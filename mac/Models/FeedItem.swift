@@ -9,17 +9,9 @@ struct FeedItem: Codable, Identifiable {
     let reason: Reason?
     let feedContext: String?
 
-    // Compute a unique identifier:
-    // If the item has a post, use its URI.
-    // Otherwise, if there's a reason, use the actor's DID.
-    // Otherwise, fall back to feedContext or a generated UUID.
     var id: String {
         if let post = post {
-            return post.uri
-        } else if let reason = reason {
-            return reason.by.did
-        } else if let context = feedContext, !context.isEmpty {
-            return context
+            return post.cid
         } else {
             return UUID().uuidString
         }
